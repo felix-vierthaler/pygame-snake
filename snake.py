@@ -146,11 +146,18 @@ class App:
         
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
 
-        self.menuLoop()
-        self.gameLoop()
+        appRunning = True
+        while appRunning:
+            appRunning = self.menuLoop()
+            if not appRunning:
+                break
+            appRunning = self.gameLoop()
+            if not appRunning:
+                break
         
 
     def gameLoop(self):
+        returnValue = True
         clock = pygame.time.Clock()
         done = False
         while not done:
@@ -158,17 +165,24 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
+                    returnValue = False
 
             self.getInput()
-            self.update()
+            status = self.update()
             self.screen.fill((0, 0, 0))
             self.render()
+
+            if not status:
+                done = True
 
             pygame.display.flip()
 
             clock.tick(200)
 
+        return returnValue
+
     def menuLoop(self):
+        returnValue = True
         clock = pygame.time.Clock()
         menu = True
         while menu:
@@ -176,14 +190,16 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     menu = False
+                    returnValue = False
                 if event.type == pygame.KEYDOWN:
                     menu = False
-            self.screen.fill((255, 255, 255))
-            
 
+            self.screen.fill((255, 255, 255))
 
             pygame.display.flip()
             clock.tick(60)
+
+        return returnValue
 
     def restart():
         pass
@@ -201,12 +217,15 @@ class App:
             self.snake.right()
 
     def update(self):
+        status = True
+
         #update snake
         self.snake.update()
 
         #if snake goes outside screen let her die
         if(self.snake.x > self.WIDTH-self.BOX_WIDTH or self.snake.x < 0 or self.snake.y > self.HEIGHT-self.BOX_WIDTH or self.snake.y < 0):
             self.snake.die()
+            status = False
 
         #check if snake eats apple / intersects with it and remove those
         intersections = self.snake.checkIntersectList(self.apples.apples)
@@ -214,6 +233,7 @@ class App:
             self.snake.addSchwanz()
             self.apples.remove(intersection)
 
+        return status
 
     def render(self):
         self.apples.render(self.screen)
