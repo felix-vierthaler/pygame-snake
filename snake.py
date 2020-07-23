@@ -22,6 +22,15 @@ class Snake:
         self.isDead = False
         self.score = 0
 
+        #add assets
+        self.snakeBodyImg = pygame.image.load('assets/snake-body.png')
+        self.snakeBodyImg = pygame.transform.scale(self.snakeBodyImg, (boxWidth, boxWidth))
+        self.imgCounter = 0
+
+        self.snakeHeadImg = pygame.image.load('assets/snake-head.png')
+        self.snakeHeadImg = pygame.transform.scale(self.snakeHeadImg, (boxWidth, boxWidth))
+
+
     def update(self):
         #if snake is directly on field
         if self.x % self.boxWidth == 0 and self.y % self.boxWidth ==0:
@@ -57,11 +66,22 @@ class Snake:
 
     def render(self, screen):
         #draw all tail elements on screen
+
+        #turn snake body every few frames to animate
+        self.imgCounter += 1
+        if(self.imgCounter == 4):
+            self.imgCounter = 0
+            self.snakeBodyImg = pygame.transform.rotate(self.snakeBodyImg, 90)
+
         for x in range(len(self.tailX)):
-            pygame.draw.rect(screen, (0, 100, 255), pygame.Rect(self.tailX[x], self.tailY[x], self.boxWidth, self.boxWidth))
+            screen.blit(self.snakeBodyImg, pygame.Rect(self.tailX[x], self.tailY[x], self.boxWidth, self.boxWidth))
+            #pygame.draw.rect(screen, (0, 100, 255), pygame.Rect(self.tailX[x], self.tailY[x], self.boxWidth, self.boxWidth))
 
         #draw main snake element on screen
-        pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
+        turnAmount = 90 + self.direction * 90
+        img = pygame.transform.rotate(self.snakeHeadImg, 360 - turnAmount)
+        screen.blit(img, pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
+        #pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
 
     def die(self):
         self.isDead = True

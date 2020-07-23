@@ -32,6 +32,9 @@ class GameScene(SceneBase):
         self.apples = apples.Apples(width, height, self.BOX_WIDTH)
         self.nukes = nukes.Nukes(width, height, self.BOX_WIDTH)
 
+        #add assets
+        snakeBodyImg = pygame.image.load('assets/snake-body.png')
+
         #add specific amount of apples at beginning
         for i in range(6):
             self.apples.addApple()
