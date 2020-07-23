@@ -18,7 +18,6 @@ class Nukes:
             self.boxWidth = boxWidth
 
             #import assets
-            #assets
             self.nukeImg = pygame.image.load('assets/enemie.png')
             self.nukeImg = pygame.transform.scale(self.nukeImg, (boxWidth, boxWidth))
 

@@ -1,3 +1,6 @@
+#import os
+#os.environ["SDL_AUDIODRIVER"] = "dsp"
+
 import pygame
 
 #Class to handle the game loop and the scenes
@@ -31,6 +34,13 @@ class App:
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         #set starting scene
         self.changeScene(self.startScene)
+
+        #pygame.mixer.init()
+
+        #load music
+        #pygame.mixer.music.load("music.mp3")
+        #pygame.mixer.music.play(0)
+
 
         while self.running:
             #test if window was closed

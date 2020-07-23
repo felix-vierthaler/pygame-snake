@@ -48,6 +48,8 @@ class GameScene(SceneBase):
         #font needed for score overlay
         self.font = pygame.font.SysFont("comicsansms", 40)
 
+        
+
     #get the inputs from pygame and process them
     def handleEvent(self):
         pressed = pygame.key.get_pressed()
@@ -85,7 +87,7 @@ class GameScene(SceneBase):
 
     def render(self, screen):
         #fill bg in black
-        screen.fill((0, 0, 0))
+        screen.fill((60, 50, 7))
         #render apples and snake and nukes
         self.apples.render(screen)
         self.nukes.render(screen)
