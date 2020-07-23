@@ -3,36 +3,36 @@ from random import randint
 import math
 
 #class that organizes all the apples
-class Apples:
+class Nukes:
     def __init__(self, width, height, boxWidth):
-        self.apples = []
+        self.nukes = []
         self.width = width
         self.height = height
         self.boxWidth = boxWidth
 
     #class to store one apple
-    class Apple:
+    class Nuke:
         def __init__(self, x, y, boxWidth):
             self.x = x
             self.y = y
             self.boxWidth = boxWidth
 
         def render(self, screen):
-            pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
+            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
 
     #add apple at random position
-    def addApple(self):
+    def addNuke(self):
         widthM = self.width / self.boxWidth
         heightM = self.height / self.boxWidth
-        apple = self.Apple(randint(0, widthM-1) * self.boxWidth, randint(0, heightM-1) * self.boxWidth, self.boxWidth)
-        self.apples.append(apple)
+        nuke = self.Nuke(randint(0, widthM-1) * self.boxWidth, randint(0, heightM-1) * self.boxWidth, self.boxWidth)
+        self.nukes.append(nuke)
 
     #remove specified apple
-    def remove(self, apple):
-        self.apples.remove(apple)
-        self.addApple()
+    def remove(self, nuke):
+        self.nukes.remove(nuke)
+        self.addNuke()
 
     #render all apples in list
     def render(self, screen):
-        for apple in self.apples:
-            apple.render(screen)
+        for nuke in self.nukes:
+            nuke.render(screen)

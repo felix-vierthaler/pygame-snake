@@ -1,5 +1,6 @@
 import pygame
 
+#Class to handle the game loop and the scenes
 class App:
     WIDTH = 900
     HEIGHT = 600
@@ -10,21 +11,26 @@ class App:
         self.running = True
         self.screen = 0
 
+    #creates new object of given class and sets activeScene to it
     def changeScene(self, newScene):
         self.activeScene = newScene(self, self.WIDTH, self.HEIGHT)
+    #same as above, but an object can be passed to the new Scene
     def changeSceneObj(self, newScene, obj):
         self.activeScene = newScene(self, self.WIDTH, self.HEIGHT, obj)
 
+    #function to stop gameloop from outside
     def stop():
         self.running = False
 
+    #starts the gameloop
     def start(self):
+        #pygame setup
         clock = pygame.time.Clock()
         pygame.init()
         pygame.display.set_caption(self.TITLE)
-        self.changeScene(self.startScene)
-        
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        #set starting scene
+        self.changeScene(self.startScene)
 
         while self.running:
             #test if window was closed
@@ -33,10 +39,12 @@ class App:
                     self.running = False
                     break
 
+            #handle events, update and render active Scene
             self.activeScene.handleEvent()
             self.activeScene.update()
             self.activeScene.render(self.screen)
 
-
+            #flip pygame buffer to actually render to screen
             pygame.display.flip()
+            #set framerate of 60fps
             clock.tick(60)

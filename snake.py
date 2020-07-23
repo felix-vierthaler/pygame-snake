@@ -2,8 +2,9 @@ from random import randint
 import pygame
 import math
 
+#class for snake object in game
 class Snake:
-    addSchwanzTrue = False
+    addSchwanzTrue = False  #wether or not to add a schwanz piece
 
     def __init__(self, width, height, boxWidth):
         self.width = width
@@ -12,11 +13,11 @@ class Snake:
         self.y = 0
         self.boxWidth = boxWidth
 
-        self.tailX = []
-        self.tailY = []
-        self.direction = 0
-        self.nextDirection = 0
-        self.speed = 3
+        self.tailX = []  #stores x and y coordinates of schwanz pieces
+        self.tailY = []  #
+        self.direction = 0  #0=down 1=left 2=up 3=right
+        self.nextDirection = 0  #direction it will go once it is in middle of field
+        self.speed = 3 #danger: has to be dividable by boxWidth
 
         self.isDead = False
         self.score = 0
@@ -55,9 +56,11 @@ class Snake:
 
 
     def render(self, screen):
+        #draw all tail elements on screen
         for x in range(len(self.tailX)):
             pygame.draw.rect(screen, (0, 100, 255), pygame.Rect(self.tailX[x], self.tailY[x], self.boxWidth, self.boxWidth))
 
+        #draw main snake element on screen
         pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
 
     def die(self):
@@ -67,6 +70,7 @@ class Snake:
         self.score += 1
         self.addSchwanzTrue = True
 
+    #checks for intersection with itself, die if this is the case
     def checkIntersect(self):
         for i in range(len(self.tailX)-1):
             x=abs(self.x - self.tailX[i])
@@ -76,7 +80,8 @@ class Snake:
                 if x+y < self.boxWidth:
                     self.die()
                     break
-
+    
+    #checks intersection with all elements on list, returns list
     def checkIntersectList(self, list):
         intersections = []
         for item in list:
@@ -84,12 +89,12 @@ class Snake:
             y=abs(self.y - item.y)
 
             if(x==0 or y==0):
-                if x+y == 0:
+                if x+y < self.boxWidth:
                     intersections.append(item)
         
         return intersections
 
-
+    #functions to set direction of next movement from outside of class
     def up(self):
         self.nextDirection = 2
     def down(self):
