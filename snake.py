@@ -135,7 +135,7 @@ class App:
     def __init__(self):
         self.screen = 0
 
-        self.snake = Snake(self.WIDTH/2, self.HEIGHT/2, self.BOX_WIDTH)
+        self.snake = Snake(self.WIDTH//2, self.HEIGHT//2, self.BOX_WIDTH)
         self.apples = Apples(self.WIDTH, self.HEIGHT, self.BOX_WIDTH)
 
         for i in range(40):
