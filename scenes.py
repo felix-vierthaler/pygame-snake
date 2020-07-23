@@ -1,9 +1,11 @@
 import pygame
+from random import randint
 
 #import own packages
 import snake
 import apples
 import nukes
+import eatAnimation
 
 #base class for all scenes
 class SceneBase:
@@ -32,9 +34,6 @@ class GameScene(SceneBase):
         self.apples = apples.Apples(width, height, self.BOX_WIDTH)
         self.nukes = nukes.Nukes(width, height, self.BOX_WIDTH)
 
-        #add assets
-        snakeBodyImg = pygame.image.load('assets/snake-body.png')
-
         #add specific amount of apples at beginning
         for i in range(6):
             self.apples.addApple()
@@ -42,6 +41,9 @@ class GameScene(SceneBase):
         #add specific amount of nukes at beginning
         for i in range(12):
             self.nukes.addNuke()
+
+        #init particles
+        self.animation = eatAnimation.eatAnimation(self.BOX_WIDTH)
         
         #font needed for score overlay
         self.font = pygame.font.SysFont("comicsansms", 40)
@@ -63,12 +65,14 @@ class GameScene(SceneBase):
 
     def update(self):
         self.snake.update()
+        self.animation.update()
 
         #check if apples intersect with snake
         intersections = self.snake.checkIntersectList(self.apples.apples)
         for intersection in intersections:
             self.apples.remove(intersection)  #remove intersecting apples
             self.snake.addSchwanz()  #add schwanz to snake
+            self.animation.start(self.snake.x, self.snake.y, randint(5,30))
 
         #check if nukes intersect with snake
         intersections = self.snake.checkIntersectList(self.nukes.nukes)
@@ -85,7 +89,9 @@ class GameScene(SceneBase):
         #render apples and snake and nukes
         self.apples.render(screen)
         self.nukes.render(screen)
+        self.animation.render(screen)
         self.snake.render(screen)
+        
         
 
         #render score overlay
