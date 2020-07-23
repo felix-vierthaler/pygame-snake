@@ -17,8 +17,14 @@ class Nukes:
             self.y = y
             self.boxWidth = boxWidth
 
+            #import assets
+            #assets
+            self.nukeImg = pygame.image.load('assets/enemie.png')
+            self.nukeImg = pygame.transform.scale(self.nukeImg, (boxWidth, boxWidth))
+
         def render(self, screen):
-            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
+            screen.blit(self.nukeImg, pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
+            #pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
 
     #add apple at random position
     def addNuke(self):

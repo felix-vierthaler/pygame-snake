@@ -10,6 +10,7 @@ class Apples:
         self.height = height
         self.boxWidth = boxWidth
 
+
     #class to store one apple
     class Apple:
         def __init__(self, x, y, boxWidth):
@@ -17,8 +18,13 @@ class Apples:
             self.y = y
             self.boxWidth = boxWidth
 
+            #assets
+            self.appleImg = pygame.image.load('assets/gold.png')
+            self.appleImg = pygame.transform.scale(self.appleImg, (boxWidth, boxWidth))
+
         def render(self, screen):
-            pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
+            screen.blit(self.appleImg, pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
+            #pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
 
     #add apple at random position
     def addApple(self):

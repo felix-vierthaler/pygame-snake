@@ -34,7 +34,7 @@ class eatAnimation:
                 self.animation.remove(self)
 
         def render(self, screen):
-            pygame.draw.rect(screen, (40, 240, 0), pygame.Rect(self.x, self.y, self.size, self.size))
+            pygame.draw.rect(screen, (randint(248,255), randint(220,230), 11), pygame.Rect(self.x, self.y, self.size, self.size))
     
     def update(self):
         for particle in self.particles:
