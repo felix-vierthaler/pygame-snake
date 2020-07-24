@@ -10,7 +10,6 @@ class Apples:
         self.height = height
         self.boxWidth = boxWidth
 
-
     #class to store one apple
     class Apple:
         def __init__(self, x, y, boxWidth):
