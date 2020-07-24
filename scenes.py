@@ -59,7 +59,6 @@ class GameScene(SceneBase):
         #add sounds
         self.explosionSound = pygame.mixer.Sound("music/explosion.wav")
         
-
     #get the inputs from pygame and process them
     def handleEvent(self):
         pressed = pygame.key.get_pressed()
@@ -125,7 +124,6 @@ class MenuScene(SceneBase):
         self.fontL = pygame.font.SysFont("comicsansms", 70)
         self.fontS = pygame.font.SysFont("comicsansms", 35)
 
-
     def handleEvent(self):
         #if enter is pressed, go to GameScene
         pressed = pygame.key.get_pressed()
@@ -158,7 +156,6 @@ class OverScene(SceneBase):
         #create fonts
         self.fontL = pygame.font.SysFont("comicsansms", 100)
         self.fontS = pygame.font.SysFont("comicsansms", 50)
-
 
     def handleEvent(self):
         #if enter key is pressed go to game scene, if esc is pressed go to menu scene

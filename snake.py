@@ -38,17 +38,13 @@ class Snake:
         self.biteSound = pygame.mixer.Sound("music/bite2.wav")
 
     def update(self):
-        
-
-
-
         #if snake is directly on field
         if self.x % self.boxWidth == 0 and self.y % self.boxWidth ==0:
             #add postition to the tail
             self.tailX.append(self.x)
             self.tailY.append(self.y)
 
-            #delete last tail element if no schwanz is to be added
+            #delete last tail element if no schwanz is to be added and still moving
             if not self.addSchwanzTrue and self.speed != 0:
                 del self.tailX[0]
                 del self.tailY[0]
@@ -59,9 +55,9 @@ class Snake:
                 #change direction if possible
                 if abs(self.nextDirection-self.direction) != 2:
                     self.direction = self.nextDirection
+            #if it died, slow down speed until 0
             elif self.speed > 0:
                 self.speed -= 1
-
 
         #move snake according to speed and direction
         if(self.direction == 0): self.y += self.speed
@@ -80,14 +76,9 @@ class Snake:
 
         #if dying add died frames
         if self.dying:
-            #self.speed = self.speed * self.DYING_SPEED_MULTIPLYER  #slow down snake
-
             self.framesSinceDead += 1
             if self.framesSinceDead >= self.DIE_FRAMES:
                 self.isDead = True
-
-        
-
 
     def render(self, screen):
         #draw all tail elements on screen
@@ -98,6 +89,7 @@ class Snake:
             self.imgCounter = 0
             self.snakeBodyImg = pygame.transform.rotate(self.snakeBodyImg, 90)
 
+        #draw all snake bodys on the screen
         for x in range(len(self.tailX)):
             screen.blit(self.snakeBodyImg, pygame.Rect(self.tailX[x], self.tailY[x], self.boxWidth, self.boxWidth))
             #pygame.draw.rect(screen, (0, 100, 255), pygame.Rect(self.tailX[x], self.tailY[x], self.boxWidth, self.boxWidth))
@@ -108,10 +100,12 @@ class Snake:
         screen.blit(img, pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
         #pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
 
+    #initiates dying process and fades music out
     def die(self):
         self.dying = True
         pygame.mixer.music.fadeout(2000)
 
+    #adds one schwanz element and plays eat sound
     def addSchwanz(self):
         self.score += 1
         self.addSchwanzTrue = True

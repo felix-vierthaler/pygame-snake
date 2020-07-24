@@ -1,6 +1,3 @@
-#import os
-#os.environ["SDL_AUDIODRIVER"] = "dsp"
-
 import pygame
 
 #Class to handle the game loop and the scenes
@@ -40,9 +37,6 @@ class App:
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         #set starting scene
         self.changeScene(self.startScene)
-
-        
-
 
         while self.running:
             #test if window was closed
