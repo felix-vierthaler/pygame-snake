@@ -45,7 +45,9 @@ class GameScene(SceneBase):
             self.nukes.addNuke()
 
         #init particles
-        self.animation = eatAnimation.eatAnimation(self.BOX_WIDTH)
+        self.animationEat = eatAnimation.EatAnimation(self.BOX_WIDTH)
+        self.animationNuke = eatAnimation.EatAnimation(self.BOX_WIDTH)
+        self.animationNuke.setColor((248,20,25))
         
         #font needed for score overlay
         self.font = pygame.font.SysFont("comicsansms", 40)
@@ -54,8 +56,8 @@ class GameScene(SceneBase):
         pygame.mixer.music.load("music/music.mp3")
         pygame.mixer.music.play(-1)
 
-       
-
+        #add sounds
+        self.explosionSound = pygame.mixer.Sound("music/explosion.wav")
         
 
     #get the inputs from pygame and process them
@@ -75,18 +77,23 @@ class GameScene(SceneBase):
 
     def update(self):
         self.snake.update()
-        self.animation.update()
+        self.animationEat.update()
+        self.animationNuke.update()
 
         #check if apples intersect with snake
         intersections = self.snake.checkIntersectList(self.apples.apples)
         for intersection in intersections:
             self.snake.addSchwanz()  #add schwanz to snake
             self.apples.remove(intersection)  #remove intersecting apples
-            self.animation.start(self.snake.x, self.snake.y, randint(5,30))
+            self.animationEat.start(self.snake.x, self.snake.y, randint(5,30))
 
         #check if nukes intersect with snake
         intersections = self.snake.checkIntersectList(self.nukes.nukes)
         for intersection in intersections:
+            self.nukes.remove(intersection)  #remove intersecting apples
+            if not self.snake.dying:
+                pygame.mixer.Sound.play(self.explosionSound)
+                self.animationNuke.start(self.snake.x, self.snake.y, randint(5,30))
             self.snake.die()
 
         #if snake died, go to OverScene
@@ -99,10 +106,9 @@ class GameScene(SceneBase):
         #render apples and snake and nukes
         self.apples.render(screen)
         self.nukes.render(screen)
-        self.animation.render(screen)
+        self.animationEat.render(screen)
+        self.animationNuke.render(screen)
         self.snake.render(screen)
-        
-        
 
         #render score overlay
         text = self.font.render("Score: " + str(self.snake.score), True, (255, 255, 255))
