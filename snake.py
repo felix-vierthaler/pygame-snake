@@ -4,6 +4,8 @@ import math
 
 #class for snake object in game
 class Snake:
+    DIE_FRAMES = 200
+    DYING_SPEED_MULTIPLYER = 0.98
     addSchwanzTrue = False  #wether or not to add a schwanz piece
 
     def __init__(self, width, height, boxWidth):
@@ -20,6 +22,8 @@ class Snake:
         self.speed = 3 #danger: has to be dividable by boxWidth
 
         self.isDead = False
+        self.dying = False
+        self.framesSinceDead = 0
         self.score = 0
 
         #add assets
@@ -30,8 +34,14 @@ class Snake:
         self.snakeHeadImg = pygame.image.load('assets/snake-head.png')
         self.snakeHeadImg = pygame.transform.scale(self.snakeHeadImg, (boxWidth, boxWidth))
 
+        #add sounds
+        self.biteSound = pygame.mixer.Sound("music/bite2.wav")
 
     def update(self):
+        
+
+
+
         #if snake is directly on field
         if self.x % self.boxWidth == 0 and self.y % self.boxWidth ==0:
             #add postition to the tail
@@ -39,14 +49,19 @@ class Snake:
             self.tailY.append(self.y)
 
             #delete last tail element if no schwanz is to be added
-            if not self.addSchwanzTrue:
+            if not self.addSchwanzTrue and self.speed != 0:
                 del self.tailX[0]
                 del self.tailY[0]
             self.addSchwanzTrue = False
 
-            #change direction if possible
-            if abs(self.nextDirection-self.direction) != 2:
-                self.direction = self.nextDirection
+            #if snake didnt die yet
+            if not self.dying:
+                #change direction if possible
+                if abs(self.nextDirection-self.direction) != 2:
+                    self.direction = self.nextDirection
+            elif self.speed > 0:
+                self.speed -= 1
+
 
         #move snake according to speed and direction
         if(self.direction == 0): self.y += self.speed
@@ -63,13 +78,23 @@ class Snake:
         #check if snake ran into itself
         self.checkIntersect()
 
+        #if dying add died frames
+        if self.dying:
+            #self.speed = self.speed * self.DYING_SPEED_MULTIPLYER  #slow down snake
+
+            self.framesSinceDead += 1
+            if self.framesSinceDead >= self.DIE_FRAMES:
+                self.isDead = True
+
+        
+
 
     def render(self, screen):
         #draw all tail elements on screen
 
         #turn snake body every few frames to animate
         self.imgCounter += 1
-        if(self.imgCounter == 4):
+        if self.imgCounter >= 4 and self.speed != 0:
             self.imgCounter = 0
             self.snakeBodyImg = pygame.transform.rotate(self.snakeBodyImg, 90)
 
@@ -84,11 +109,15 @@ class Snake:
         #pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
 
     def die(self):
-        self.isDead = True
+        self.dying = True
+        pygame.mixer.music.fadeout(2000)
 
     def addSchwanz(self):
         self.score += 1
         self.addSchwanzTrue = True
+
+        #play sound
+        pygame.mixer.Sound.play(self.biteSound)
 
     #checks for intersection with itself, die if this is the case
     def checkIntersect(self):

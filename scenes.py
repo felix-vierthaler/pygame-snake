@@ -21,6 +21,8 @@ class SceneBase:
         print('update needs to be overwritten!')
     def render(self, screen):
         print('render needs to be overwritten!')
+    def stop(self):
+        print('stop needs to be overwritten!')
 
 #first scene responsible for handling the game scene
 class GameScene(SceneBase):
@@ -48,6 +50,12 @@ class GameScene(SceneBase):
         #font needed for score overlay
         self.font = pygame.font.SysFont("comicsansms", 40)
 
+        #load music
+        pygame.mixer.music.load("music/music.mp3")
+        pygame.mixer.music.play(-1)
+
+       
+
         
 
     #get the inputs from pygame and process them
@@ -72,8 +80,8 @@ class GameScene(SceneBase):
         #check if apples intersect with snake
         intersections = self.snake.checkIntersectList(self.apples.apples)
         for intersection in intersections:
-            self.apples.remove(intersection)  #remove intersecting apples
             self.snake.addSchwanz()  #add schwanz to snake
+            self.apples.remove(intersection)  #remove intersecting apples
             self.animation.start(self.snake.x, self.snake.y, randint(5,30))
 
         #check if nukes intersect with snake
@@ -100,13 +108,16 @@ class GameScene(SceneBase):
         text = self.font.render("Score: " + str(self.snake.score), True, (255, 255, 255))
         screen.blit(text, (6,6))
 
+    def stop(self):
+        pygame.mixer.music.fadeout(2000)
+
 class MenuScene(SceneBase):
     def __init__(self, app, width, height):
         SceneBase.__init__(self, app, width, height)
 
         #create fonts
-        self.fontL = pygame.font.SysFont("comicsansms", 100)
-        self.fontS = pygame.font.SysFont("comicsansms", 50)
+        self.fontL = pygame.font.SysFont("comicsansms", 70)
+        self.fontS = pygame.font.SysFont("comicsansms", 35)
 
 
     def handleEvent(self):
@@ -130,6 +141,8 @@ class MenuScene(SceneBase):
         screen.blit(text1, (self.width/2 - text1.get_width()/2, self.height/2 - 100))
         screen.blit(text2, (self.width/2 - text2.get_width()/2, self.height/2 - 0))
 
+    def stop(self):
+        pass
 
 class OverScene(SceneBase):
     def __init__(self, app, width, height, obj):
@@ -164,3 +177,6 @@ class OverScene(SceneBase):
         screen.blit(text1, (self.width/2 - text1.get_width()/2, self.height/2 - 100))
         screen.blit(text2, (self.width/2 - text2.get_width()/2, self.height/2 - 0))
         screen.blit(text3, (self.width/2 - text3.get_width()/2, self.height/2 - 150))
+
+    def stop(self):
+        pass
