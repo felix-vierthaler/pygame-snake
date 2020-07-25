@@ -19,7 +19,7 @@ class Snake:
         self.tailY = []  #
         self.direction = 0  #0=down 1=left 2=up 3=right
         self.nextDirection = 0  #direction it will go once it is in middle of field
-        self.speed = 3 #danger: has to be dividable by boxWidth
+        self.speed = 2 #danger: has to be dividable by boxWidth
 
         self.isDead = False
         self.dying = False

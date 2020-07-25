@@ -24,7 +24,7 @@ class App:
         self.activeScene = newScene(self, self.WIDTH, self.HEIGHT, obj)
 
     #function to stop gameloop from outside
-    def stop():
+    def stop(self):
         self.running = False
 
     #starts the gameloop
@@ -53,4 +53,4 @@ class App:
             #flip pygame buffer to actually render to screen
             pygame.display.flip()
             #set framerate of 60fps
-            clock.tick(60)
+            clock.tick_busy_loop(120)
