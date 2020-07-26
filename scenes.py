@@ -24,7 +24,7 @@ class SceneBase:
     def stop(self):
         print('stop needs to be overwritten!')
 
-#first scene responsible for handling the game scene
+#first scene responsible for handling the game scene.
 class GameScene(SceneBase):
     BOX_WIDTH = 30
 
