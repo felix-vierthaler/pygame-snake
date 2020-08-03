@@ -97,6 +97,9 @@ class Snake:
         #draw main snake element on screen
         turnAmount = 90 + self.direction * 90
         img = pygame.transform.rotate(self.snakeHeadImg, 360 - turnAmount)
+
+        #blit image of head on screen
+        screen.blit(img, pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
         
         
         #pygame.draw.rect(screen, (255, 100, 0), pygame.Rect(self.x, self.y, self.boxWidth, self.boxWidth))
